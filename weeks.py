@@ -1,5 +1,6 @@
 import csv
 from datetime import date, timedelta
+from fpdf import FPDF
 
 def weeks_of_year(year):
     # Find the first Monday of the year
@@ -30,7 +31,29 @@ def write_weeks_csv(filename, year):
         writer.writerow(['Week', 'Month', 'M', 'T', 'W', 'R', 'F', 'S', 'S'])
         writer.writerows(weeks)
 
+def write_weeks_pdf(filename, year):
+    weeks = weeks_of_year(year)
+    pdf = FPDF(orientation='L', unit='in', format='Letter')
+    pdf.add_page()
+    pdf.set_font("Arial", size=10)
+    col_widths = [0.6, 1.0] + [0.4]*7
+    headers = ['Week', 'Month', 'M', 'T', 'W', 'R', 'F', 'S', 'S']
+
+    # Table header
+    for i, header in enumerate(headers):
+        pdf.cell(col_widths[i], 0.3, header, border=1, align='C')
+    pdf.ln(0.3)
+
+    # Table rows
+    for row in weeks:
+        for i, cell in enumerate(row):
+            pdf.cell(col_widths[i], 0.3, str(cell), border=1, align='C')
+        pdf.ln(0.3)
+
+    pdf.output(filename)
+
 if __name__ == "__main__":
     year = 2025  # Change this to the desired year
     write_weeks_csv('weeks.csv', year)
+    write_weeks_pdf('weeks.pdf', year)
     print("weeks.csv generated.")
