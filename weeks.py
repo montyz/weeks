@@ -45,7 +45,9 @@ def write_weeks_pdf(filename, year):
     # pdf.ln(0.3)
     # Title line with the year
     pdf.set_font("Arial", "B", 14)
-    pdf.cell(sum(col_widths), 0.4, f"{year}", border=0, align='C')
+    # Center the title on the page
+    page_width = pdf.w - 2 * pdf.l_margin
+    pdf.cell(page_width, 0.4, f"{year}", border=0, align='C')
     pdf.ln(0.3)
     pdf.set_font("Arial", size=10)
 
@@ -58,7 +60,7 @@ def write_weeks_pdf(filename, year):
     pdf.output(filename)
 
 if __name__ == "__main__":
-    year = 2025  # Change this to the desired year
+    year = 2026  # Change this to the desired year
     write_weeks_csv('weeks.csv', year)
     write_weeks_pdf('weeks.pdf', year)
     print("weeks.csv generated.")
