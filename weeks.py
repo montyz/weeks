@@ -8,10 +8,15 @@ def weeks_of_year(year):
     d -= timedelta(days=7)  # Start from the week before first Monday of the year
     week_num = 1
     weeks = []
+    month = None
     while d.year <= year or (d.year == year + 1 and d.isocalendar()[1] == 1):
         week_start = d
         week_end = d + timedelta(days=6)
-        weeks.append([(week_num-1) %52 +1, week_start.isoformat(), week_end.isoformat()])
+        new_month = week_end.month
+        weeks.append([(week_num-1) % 52 + 1, week_end.strftime('%B') if month is None or new_month != month else ''])
+        month = new_month
+        for i in range(7):
+            weeks[-1].append((week_start + timedelta(days=i)).day)
         d += timedelta(days=7)
         week_num += 1
         if week_end.year > year and week_start.year > year:
@@ -22,7 +27,7 @@ def write_weeks_csv(filename, year):
     weeks = weeks_of_year(year)
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['Week Number', 'Start Date', 'End Date'])
+        writer.writerow(['Week', 'Month', 'M', 'T', 'W', 'R', 'F', 'S', 'S'])
         writer.writerows(weeks)
 
 if __name__ == "__main__":
