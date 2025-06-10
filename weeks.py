@@ -33,22 +33,27 @@ def write_weeks_csv(filename, year):
 
 def write_weeks_pdf(filename, year):
     weeks = weeks_of_year(year)
-    pdf = FPDF(orientation='L', unit='in', format='Letter')
+    pdf = FPDF(orientation='P', unit='in', format='Letter')
     pdf.add_page()
     pdf.set_font("Arial", size=10)
-    col_widths = [0.6, 1.0] + [0.4]*7
+    col_widths = [0.4, 0.8] + [0.2]*7
     headers = ['Week', 'Month', 'M', 'T', 'W', 'R', 'F', 'S', 'S']
 
     # Table header
-    for i, header in enumerate(headers):
-        pdf.cell(col_widths[i], 0.3, header, border=1, align='C')
+    # for i, header in enumerate(headers):
+    #     pdf.cell(col_widths[i], 0.3, header, border=1, align='C')
+    # pdf.ln(0.3)
+    # Title line with the year
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(sum(col_widths), 0.4, f"{year}", border=0, align='C')
     pdf.ln(0.3)
+    pdf.set_font("Arial", size=10)
 
     # Table rows
     for row in weeks:
         for i, cell in enumerate(row):
-            pdf.cell(col_widths[i], 0.3, str(cell), border=1, align='C')
-        pdf.ln(0.3)
+            pdf.cell(col_widths[i], 0.3, str(cell), border=0, align='C')
+        pdf.ln(0.175)
 
     pdf.output(filename)
 
