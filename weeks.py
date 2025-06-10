@@ -10,7 +10,7 @@ def weeks_of_year(year):
     week_num = 1
     weeks = []
     month = None
-    while d.year <= year or (d.year == year + 1 and d.isocalendar()[1] == 1):
+    while d.year <= year:
         week_start = d
         week_end = d + timedelta(days=6)
         new_month = week_end.month
@@ -55,7 +55,7 @@ def write_weeks_pdf(filename, year):
     for row in weeks:
         for i, cell in enumerate(row):
             pdf.cell(col_widths[i], 0.3, str(cell), border=0, align='C')
-        pdf.ln(0.17)
+        pdf.ln(0.175)
 
     pdf.output(filename)
 
